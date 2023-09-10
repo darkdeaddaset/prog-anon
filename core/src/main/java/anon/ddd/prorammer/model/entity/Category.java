@@ -1,5 +1,6 @@
 package anon.ddd.prorammer.model.entity;
 
+import anon.ddd.prorammer.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.OffsetDateTime;
 
 /**
  * Сущность категории.
@@ -28,5 +30,8 @@ public class Category {
     private String name;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private Status status;
+
+    @Column(name = "createDttm", nullable = false)
+    private OffsetDateTime createDttm = OffsetDateTime.now();
 }

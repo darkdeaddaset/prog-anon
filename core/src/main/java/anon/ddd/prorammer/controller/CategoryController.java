@@ -1,11 +1,15 @@
 package anon.ddd.prorammer.controller;
 
-import anon.ddd.prorammer.model.entity.Category;
-import anon.ddd.prorammer.model.entity.FileStorage;
-import anon.ddd.prorammer.model.repository.CategoryRepository;
+import anon.ddd.prorammer.dto.CategoryDTO;
+import anon.ddd.prorammer.dto.CategoryUpdateDTO;
+import anon.ddd.prorammer.service.crud.CrudBasic;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,23 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/category")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
+    private final CrudBasic<CategoryUpdateDTO, CategoryDTO> crudBasic;
 
-    @GetMapping
-    public Category getCategory() {
-        Category category = categoryRepository.getReferenceById(3L);
-        return category;
+    @GetMapping("{id}")
+    public CategoryDTO get(@PathVariable long id) {
+        return crudBasic.get(id);
     }
 
     @PostMapping
-    public void test() {
-        Category category1 = new Category();
-        category1.setName("Test");
-        category1.setStatus("Test");
+    public CategoryDTO save(@RequestBody CategoryDTO dto) {
+        return crudBasic.save(dto);
+    }
 
-        FileStorage fileStorage = new FileStorage();
-        fileStorage.setName("Test");
-        //category1.setLogo(fileStorage);
-        Category category2 = categoryRepository.save(category1);
+    @PutMapping
+    public CategoryDTO update(@RequestBody CategoryUpdateDTO dto) {
+        return crudBasic.update(dto);
+    }
+
+    @DeleteMapping("/close/{id}")
+    public void closed(@PathVariable long id) {
+        crudBasic.closed(id);
     }
 }
